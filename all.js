@@ -69,14 +69,15 @@ document.addEventListener('DOMContentLoaded', () => {
         sortByKey(this.value);
       });
     }
-  
+    
     // 手機版排序下拉選單
-    const mobileSelect = document.getElementById('.moblie-select');
+    const mobileSelect = document.getElementById('js-moblie-select');
     if (mobileSelect) {
       mobileSelect.addEventListener('change', function() {
         sortByKey(this.value);
       });
     }
+
   
     // 分類過濾
     document.querySelectorAll('.button-group button').forEach(btn => {
