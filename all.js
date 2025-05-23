@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   
     // 桌機版排序下拉選單
-    const desktopSelect = document.querySelector('form-select ');
+    const desktopSelect = document.querySelector('form-select');
     if (desktopSelect) {
       desktopSelect.addEventListener('change', function() {
         sortByKey(this.value);
