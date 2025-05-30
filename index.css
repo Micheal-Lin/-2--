@@ -218,3 +218,7 @@ body {
     font-size: clamp(12px, 4vw, 16px);
   }
 }
+
+button {
+  cursor: pointer; /* 游標會變成「手指形狀」的圖示 */
+}

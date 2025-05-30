@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    let allData = [];
+    let allData = []; //用來儲存從 API 取得的所有作物資料。
   
     // 取得資料並渲染
     function fetchAllData() {
@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error(error);
         });
     }
+    // 使用 axios 向 API 請求資料。
+    // 成功取得資料後，存到 allData，並呼叫 renderTable 把資料顯示在表格上。
+    // 若失敗則印出錯誤訊息。
   
     // 渲染表格
     function renderTable(data) {
@@ -34,6 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       tbody.innerHTML = str;
     }
+  // 根據傳入的資料陣列，產生表格內容。
+  // 若沒有資料，顯示「查無資料」。
+  // 否則將每一筆資料組成 <tr>，顯示在表格中。
   
     // 共用排序函式
     function sortByKey(value) {
@@ -61,15 +67,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const sorted = [...allData].sort((a, b) => (Number(b[key]) || 0) - (Number(a[key]) || 0));
       renderTable(sorted);
     }
+    // 根據傳入的排序條件，決定要用哪個欄位排序。
+    // 將 allData 複製一份並排序（預設由大到小）。
+    // 排序後呼叫 renderTable 顯示結果。
   
     // 桌機版排序下拉選單
-    const desktopSelect = document.querySelector('form-select');
+    const desktopSelect = document.querySelector('.form-select');
     if (desktopSelect) {
       desktopSelect.addEventListener('change', function() {
         sortByKey(this.value);
       });
     }
-    
+  
     // 手機版排序下拉選單
     const mobileSelect = document.getElementById('js-moblie-select');
     if (mobileSelect) {
@@ -77,6 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
         sortByKey(this.value);
       });
     }
+    // 取得手機版排序下拉選單。
+    // 當選單變更時，呼叫 sortByKey 進行排序。
 
   
     // 分類過濾
@@ -92,6 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     });
+    // 監聽分類按鈕點擊事件。
+    // 點擊時根據 data-type 過濾資料，並渲染表格。
   
     // 搜尋功能
     document.querySelector('.search').addEventListener('click', () => {
@@ -103,6 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const filtered = allData.filter(item => item.作物名稱 && item.作物名稱.toLowerCase().includes(keyword));
       renderTable(filtered);
     });
+    // 監聽搜尋按鈕點擊。
+    // 取得輸入框的關鍵字，過濾資料後渲染表格。
   
     // 排序箭頭功能
     document.querySelectorAll('.sort-advanced i').forEach(icon => {
@@ -117,20 +132,39 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTable(sorted);
       });
     });
-  
+    // 監聽表格標題的排序箭頭。
+    // 點擊時根據欄位及方向排序，並渲染表格。
+
     // 手機版 select 顯示控制
-    function toggleMobileSelect() {
+    function toggleSelectByWidth() {
+      const desktopSelect = document.querySelector('.form-select');
+      const mobileSelect = document.getElementById('js-moblie-select');
       if (window.innerWidth < 768) {
-        mobileSelect.style.display = 'block';
+        if (desktopSelect) desktopSelect.style.display = 'none';
+        if (mobileSelect) mobileSelect.style.display = 'block';
       } else {
-        mobileSelect.style.display = 'none';
+        if (desktopSelect) desktopSelect.style.display = 'block';
+        if (mobileSelect) mobileSelect.style.display = 'none';
       }
     }
-    if (mobileSelect) {
-      toggleMobileSelect();
-      window.addEventListener('resize', toggleMobileSelect);
+    window.addEventListener('resize', toggleSelectByWidth);
+    document.addEventListener('DOMContentLoaded', toggleSelectByWidth);
+    // 根據視窗寬度決定是否顯示手機版 select。
+    // 當螢幕寬度小於 768px 顯示，否則隱藏。
+    // 監聽視窗尺寸變化即時調整。
+
+    // 綁定 Enter 進行觸發
+    const cropInput = document.querySelector('#crop');
+     if (cropInput) {
+      cropInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          document.querySelector('.search').click();
+        }
+      });
     }
   
     // 初始載入資料
     fetchAllData();
+    // 一進網頁就抓取資料並顯示。
   });  
